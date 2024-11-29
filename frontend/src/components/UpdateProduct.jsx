@@ -47,48 +47,97 @@ const UpdateProduct = () => {
   };
 
   return (
-    <div>
-      <h1>Update Product</h1>
-      <input
-        type="text"
-        name="name"
-        value={name}
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
-        placeholder="Enter Name"
-      />
-      <input
-        type="number"
-        name="price"
-        value={price}
-        onChange={(e) => {
-          setPrice(e.target.value);
-        }}
-        placeholder="Enter Price"
-      />
-      <input
-        type="text"
-        name="category"
-        value={category}
-        onChange={(e) => {
-          setCategory(e.target.value);
-        }}
-        placeholder="Enter Category"
-      />
-      <input
-        type="text"
-        name="company"
-        value={company}
-        onChange={(e) => {
-          setCompany(e.target.value);
-        }}
-        placeholder="Enter Company"
-      />
-
-      <button type="button" onClick={updateProductDetails}>
-        Update Product Details
-      </button>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 text-center mb-8">
+          Update Product
+        </h1>
+        <div className="space-y-6">
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Name:
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              placeholder="Enter Name"
+              className="w-full p-3 mt-1 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="price"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Price:
+            </label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              value={price}
+              onChange={(e) => {
+                setPrice(e.target.value);
+              }}
+              placeholder="Enter Price"
+              className="w-full p-3 mt-1 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="category"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Category:
+            </label>
+            <input
+              type="text"
+              id="category"
+              name="category"
+              value={category}
+              onChange={(e) => {
+                setCategory(e.target.value);
+              }}
+              placeholder="Enter Category"
+              className="w-full p-3 mt-1 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="company"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Company:
+            </label>
+            <input
+              type="text"
+              id="company"
+              name="company"
+              value={company}
+              onChange={(e) => {
+                setCompany(e.target.value);
+              }}
+              placeholder="Enter Company"
+              className="w-full p-3 mt-1 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={updateProductDetails}
+          className="w-full mt-6 p-3 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+        >
+          Update Product Details
+        </button>
+      </div>
     </div>
   );
 };

@@ -12,24 +12,26 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App min-h-screen flex flex-col bg-gray-100 dark:bg-gray-800">
       <BrowserRouter>
-        <Nav></Nav>
-        <Routes>
-          <Route element={<PrivateComponent />}>
-            <Route path="/" element={<Products />}></Route>
-            <Route path="/add" element={<AddProduct />}></Route>
-            <Route
-              path="/update/:productId"
-              element={<UpdateProduct />}
-            ></Route>
-            <Route path="/profile" element={<Profile />}></Route>
-          </Route>
-
-          <Route path="/signup" element={<Signup />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-        </Routes>
-        <Footer></Footer>
+        <header className="shadow-md bg-white dark:bg-gray-900">
+          <Nav />
+        </header>
+        <main className="flex-grow">
+          <Routes>
+            <Route element={<PrivateComponent />}>
+              <Route path="/" element={<Products />} />
+              <Route path="/add" element={<AddProduct />} />
+              <Route path="/update/:productId" element={<UpdateProduct />} />
+              <Route path="/profile" element={<Profile />} />
+            </Route>
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </main>
+        <footer className="mt-auto">
+          <Footer />
+        </footer>
       </BrowserRouter>
     </div>
   );
