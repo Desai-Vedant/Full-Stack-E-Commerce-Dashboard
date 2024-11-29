@@ -17,7 +17,7 @@ const Signup = () => {
   });
 
   const collectData = () => {
-    const userData = { email: email, password: password };
+    const userData = { name: name, email: email, password: password };
 
     axios
       .post("http://localhost:3000/register", userData)
@@ -33,39 +33,78 @@ const Signup = () => {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
-      <input
-        type="text"
-        name="name"
-        value={name}
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
-        placeholder="Enter Name"
-      />
-      <input
-        type="email"
-        name="email"
-        value={email}
-        onChange={(e) => {
-          setEmail(e.target.value);
-        }}
-        placeholder="Enter Email"
-      />
-      <input
-        type="password"
-        name="password"
-        id="password"
-        value={password}
-        onChange={(e) => {
-          setPassword(e.target.value);
-        }}
-        placeholder="Enter Password"
-      />
-      <button type="button" onClick={collectData}>
-        Sign up
-      </button>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800 p-6">
+      <div className="w-full max-w-md bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6">
+        <h1 className="text-3xl font-extrabold text-gray-700 dark:text-gray-200 mb-6 text-center">
+          Register
+        </h1>
+        <form className="space-y-4">
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1"
+            >
+              Name:
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              placeholder="Enter Name"
+              className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1"
+            >
+              Email:
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              placeholder="Enter Email"
+              className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1"
+            >
+              Password:
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              placeholder="Enter Password"
+              className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={collectData}
+            className="w-full p-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-green-500"
+          >
+            Sign up
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
