@@ -1,14 +1,35 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Nav = () => {
   const auth = localStorage.getItem("user");
   const navigate = useNavigate();
-  const logout = () => {
-    console.warn("Logging out!");
-    localStorage.clear();
-    navigate("/signup");
+
+  const logout = async () => {
+    try {
+      console.log("Logging out!");
+
+      // Call the backend logout endpoint to clear cookies
+      await axios.post(
+        "http://localhost:3000/logout",
+        {},
+        { withCredentials: true }
+      );
+
+      // Clear localStorage
+      localStorage.clear();
+
+      // Redirect user
+      navigate("/signup");
+    } catch (error) {
+      console.error(
+        "Logout failed:",
+        error.response ? error.response.data : error.message
+      );
+    }
   };
+
   return (
     <div className="top-0 left-0 w-full bg-gray-100 dark:bg-gray-800 p-4 shadow-lg z-50">
       <nav className="flex items-center justify-between">

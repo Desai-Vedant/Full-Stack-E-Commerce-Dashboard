@@ -20,7 +20,9 @@ const Signup = () => {
     const userData = { name: name, email: email, password: password };
 
     axios
-      .post("http://localhost:3000/register", userData)
+      .post("http://localhost:3000/register", userData, {
+        withCredentials: true,
+      })
       .then((response) => {
         // Save data locally only if the response is successful
         localStorage.setItem("user", JSON.stringify(response.data));
