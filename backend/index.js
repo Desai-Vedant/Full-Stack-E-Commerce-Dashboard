@@ -6,12 +6,22 @@ import cors from "cors";
 import User from "./models/User.js";
 import Product from "./models/Product.js";
 
+import bcrypt from "bcrypt";
+import cookieParser from "cookie-parser";
+import jwt from "jsonwebtoken";
+
 const app = express();
 dotenv.config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Frontend origin
+    credentials: true, // Allow cookies to be sent
+  })
+);
+app.use(cookieParser());
 
 const PORT = process.env.PORT;
 const CONNECT_URL = process.env.CONNECT_URL;
@@ -19,15 +29,37 @@ const CONNECT_URL = process.env.CONNECT_URL;
 app.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
+
+    // Check if user already exists
     const pastUser = await User.findOne({ email });
-    if (!pastUser) {
-      const user = await User.create({ name, email, password });
-      res.status(200).json(user);
-    } else {
-      res.status(500).json({ message: "User Alredy Exists!" });
+    if (pastUser) {
+      return res.status(409).json({ message: "User Already Exists!" });
     }
+
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+
+    // Create new user
+    const user = await User.create({ name, email, password: hash });
+
+    // Generate JWT token
+    const token = jwt.sign({ email, userid: user._id }, "ncircle", {
+      expiresIn: "1h",
+    });
+
+    // Set cookie with options
+    res.cookie("token", token, {
+      httpOnly: true, // Prevent client-side JS access
+      secure: true, // Use HTTPS (set to false for local development)
+      sameSite: "none", // Allow cross-origin requests
+    });
+
+    // Respond with user ID
+    return res.status(201).json({ _id: user._id });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error during registration:", error);
+    return res.status(500).json({ message: error.message });
   }
 });
 
@@ -36,17 +68,38 @@ app.post("/login", async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-      res.status(500).json({ message: "Invalid Credentials!" });
-    } else {
-      if (user.password == password) {
-        res.status(200).json(user);
-      } else {
-        res.status(500).json({ message: "Invalid Credentials!" });
-      }
+      return res.status(401).json({ message: "Invalid Credentials!" });
     }
+
+    bcrypt.compare(password, user.password, (err, result) => {
+      if (result) {
+        const token = jwt.sign({ email: email, userid: user._id }, "ncircle", {
+          expiresIn: "1h", // Token expiration (optional)
+        });
+
+        res.cookie("token", token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+        });
+
+        return res.status(200).json({ _id: user._id });
+      } else {
+        return res.status(401).json({ message: "Invalid Credentials!" });
+      }
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
+});
+
+app.post("/logout", (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true, // Matches cookie settings
+    secure: true, // Matches cookie settings (false for HTTP in dev)
+    sameSite: "none", // Matches cookie settings
+  });
+  res.status(200).json({ message: "Logged out successfully." });
 });
 
 app.post("/addproduct", async (req, res) => {
@@ -79,10 +132,12 @@ app.post("/getprofile", async (req, res) => {
   try {
     const { userId } = req.body;
     const userData = await User.findById(userId);
+
     if (!userData) {
-      res.status(500).json({ message: "User Does not Exists!" });
+      return res.status(500).json({ message: "User Does not Exist!" });
     }
-    res.status(200).json(userData);
+
+    res.status(200).json({ name: userData.name, email: userData.email });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
