@@ -47,8 +47,8 @@ const UpdateProduct = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
-      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+    <div className="flex flex-col items-center justify-center min-h-screen p-8">
+      <div className="w-full max-w-md bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 text-center mb-8">
           Update Product
         </h1>

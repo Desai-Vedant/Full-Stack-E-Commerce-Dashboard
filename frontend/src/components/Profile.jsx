@@ -6,12 +6,15 @@ const Profile = () => {
   const userEmail = userData.email;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
-      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 text-center">
-          Profile
-        </h2>
-        <div className="space-y-4">
+    <div className="flex items-center justify-center min-h-screen  p-6">
+      <div className="w-full max-w-md bg-white dark:bg-gray-900 rounded-lg shadow-lg">
+        <div className="bg-gray-300 p-4 rounded-t-lg dark:bg-gray-700">
+          <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200 text-center">
+            Profile
+          </h2>
+        </div>
+
+        <div className="space-y-4 p-4">
           <div>
             <h4 className="text-lg font-semibold text-gray-700 dark:text-gray-200">
               Name:
