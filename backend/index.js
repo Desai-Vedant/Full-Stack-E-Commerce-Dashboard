@@ -11,6 +11,14 @@ import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
 import multer from "multer";
 import path from "path";
+import { fileURLToPath } from "url";
+import fs from "fs";
+
+// Get the filename of the current module
+const __filename = fileURLToPath(import.meta.url);
+
+// Get the directory name of the current module
+const __dirname = path.dirname(__filename);
 
 // Configure multer for file storage
 const storage = multer.diskStorage({
@@ -143,14 +151,22 @@ app.post(
       const filePath = `/uploads/${req.file.filename}`;
 
       // Update the user with the profile picture path
-      const updatedUser = await User.findByIdAndUpdate(
-        userId,
-        { profilePicture: filePath },
-        { new: true } // Return the updated document
-      );
+      const pastUser = await User.findByIdAndUpdate(userId, {
+        profilePicture: filePath,
+      });
 
-      if (!updatedUser) {
+      if (!pastUser) {
         return res.status(404).json({ message: "User not found" });
+      }
+
+      if (pastUser.profilePicture != "/uploads/profile.png") {
+        fs.unlink(`${__dirname}${pastUser.profilePicture}`, (err) => {
+          if (err) {
+            console.error("Error while deleting the file:", err.message);
+            return;
+          }
+          console.log("File successfully deleted!");
+        });
       }
 
       res
@@ -166,14 +182,22 @@ app.post("/delete-profile-picture", async (req, res) => {
   try {
     const { userId } = req.body;
 
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { profilePicture: "/uploads/profile.png" },
-      { new: true }
-    );
+    const pastUser = await User.findByIdAndUpdate(userId, {
+      profilePicture: "/uploads/profile.png",
+    });
 
-    if (!updatedUser) {
+    if (!pastUser) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    if (pastUser.profilePicture != "/uploads/profile.png") {
+      fs.unlink(`${__dirname}${pastUser.profilePicture}`, (err) => {
+        if (err) {
+          console.error("Error while deleting the file:", err.message);
+          return;
+        }
+        console.log("File successfully deleted!");
+      });
     }
 
     res.status(200).json({ message: "Profile picture deleted" });
