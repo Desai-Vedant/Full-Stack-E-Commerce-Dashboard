@@ -17,18 +17,24 @@ const Login = () => {
 
   const collectData = () => {
     const userData = { email: email, password: password };
-
-    axios
-      .post("http://localhost:3000/login", userData, { withCredentials: true })
-      .then((response) => {
-        // Save data locally only if the response is successful
-        localStorage.setItem("user", JSON.stringify(response.data));
-        navigate("/"); // Redirect after successful login
-      })
-      .catch((error) => {
-        console.error("Error while logging in user:", error);
-        // Do not save data or navigate on error
-      });
+    if (email != "" && password != "") {
+      axios
+        .post("http://localhost:3000/login", userData, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          // Save data locally only if the response is successful
+          localStorage.setItem("user", JSON.stringify(response.data));
+          navigate("/"); // Redirect after successful login
+        })
+        .catch((error) => {
+          console.error("Error while logging in user:", error);
+          // Do not save data or navigate on error
+          alert(`${error.response.data.message}`);
+        });
+    } else {
+      alert("All the fields are required !");
+    }
   };
 
   return (
