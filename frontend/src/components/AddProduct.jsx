@@ -20,7 +20,7 @@ const AddProduct = () => {
     };
 
     axios
-      .post("http://localhost:3000/addproduct", productData)
+      .post("http://localhost:3000/api/products/add-product", productData)
       .then((response) => {
         navigate("/"); // Redirect after successfully Adding Product
       })

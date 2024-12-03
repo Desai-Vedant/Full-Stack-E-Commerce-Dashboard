@@ -25,7 +25,9 @@ const Profile = () => {
 
       // Fetch profile data
       axios
-        .post("http://localhost:3000/getprofile", { userId: userData._id })
+        .post("http://localhost:3000/api/users/get-profile", {
+          userId: userData._id,
+        })
         .then((response) => {
           setUserName(response.data.name);
           setUserEmail(response.data.email);
@@ -89,7 +91,7 @@ const Profile = () => {
       formData.append("userId", userData._id);
       try {
         const response = await axios.post(
-          "http://localhost:3000/upload-profile-picture",
+          "http://localhost:3000/api/users/upload-profile-picture",
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
@@ -116,7 +118,7 @@ const Profile = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/delete-profile-picture",
+        "http://localhost:3000/api/users/delete-profile-picture",
         {
           userId: userData._id,
         }

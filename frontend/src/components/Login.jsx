@@ -19,7 +19,7 @@ const Login = () => {
     const userData = { email: email, password: password };
     if (email != "" && password != "") {
       axios
-        .post("http://localhost:3000/login", userData, {
+        .post("http://localhost:3000/api/users/login", userData, {
           withCredentials: true,
         })
         .then((response) => {
@@ -85,7 +85,7 @@ const Login = () => {
           <button
             type="button"
             onClick={collectData}
-            className="w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-green-500"
           >
             Login
           </button>
