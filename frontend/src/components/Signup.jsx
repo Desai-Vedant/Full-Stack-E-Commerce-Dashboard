@@ -17,21 +17,26 @@ const Signup = () => {
   });
 
   const collectData = () => {
-    const userData = { name: name, email: email, password: password };
+    if (name != "" && email != "" && password != "") {
+      const userData = { name: name, email: email, password: password };
 
-    axios
-      .post("http://localhost:3000/register", userData, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        // Save data locally only if the response is successful
-        localStorage.setItem("user", JSON.stringify(response.data));
-        navigate("/"); // Redirect after successful login
-      })
-      .catch((error) => {
-        console.error("Error while Registering in user:", error);
-        // Do not save data or navigate on error
-      });
+      axios
+        .post("http://localhost:3000/register", userData, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          // Save data locally only if the response is successful
+          localStorage.setItem("user", JSON.stringify(response.data));
+          navigate("/"); // Redirect after successful login
+        })
+        .catch((error) => {
+          console.error("Error while Registering in user:", error);
+          // Do not save data or navigate on error
+          alert(`${error.response.data.message}`);
+        });
+    } else {
+      alert("All the fields are required !");
+    }
   };
 
   return (
@@ -53,6 +58,7 @@ const Signup = () => {
               id="name"
               name="name"
               value={name}
+              required={true}
               onChange={(e) => {
                 setName(e.target.value);
               }}
@@ -71,6 +77,7 @@ const Signup = () => {
               type="email"
               id="email"
               name="email"
+              required={true}
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -90,11 +97,12 @@ const Signup = () => {
               type="password"
               id="password"
               name="password"
+              required={true}
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-              placeholder="Enter Password"
+              placeholder="Create a Password"
               className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>

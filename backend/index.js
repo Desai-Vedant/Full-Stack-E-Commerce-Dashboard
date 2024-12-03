@@ -9,6 +9,30 @@ import Product from "./models/Product.js";
 import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
+import multer from "multer";
+import path from "path";
+
+// Configure multer for file storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // Directory to store files
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = Date.now() + "-" + file.originalname;
+    cb(null, uniqueName); // Unique file name
+  },
+});
+
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files are allowed!"), false);
+    }
+  },
+});
 
 const app = express();
 dotenv.config();
@@ -22,6 +46,7 @@ app.use(
   })
 );
 app.use(cookieParser());
+app.use("/uploads", express.static("uploads"));
 
 const PORT = process.env.PORT;
 const CONNECT_URL = process.env.CONNECT_URL;
@@ -33,7 +58,9 @@ app.post("/register", async (req, res) => {
     // Check if user already exists
     const pastUser = await User.findOne({ email });
     if (pastUser) {
-      return res.status(409).json({ message: "User Already Exists!" });
+      return res
+        .status(409)
+        .json({ message: "User Already Exists! Please Login." });
     }
 
     // Hash password
@@ -102,6 +129,59 @@ app.post("/logout", (req, res) => {
   res.status(200).json({ message: "Logged out successfully." });
 });
 
+app.post(
+  "/upload-profile-picture",
+  upload.single("profilePic"),
+  async (req, res) => {
+    try {
+      const { userId } = req.body;
+
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+
+      const filePath = `/uploads/${req.file.filename}`;
+
+      // Update the user with the profile picture path
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { profilePicture: filePath },
+        { new: true } // Return the updated document
+      );
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res
+        .status(200)
+        .json({ message: "Profile picture updated", profilePicture: filePath });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+);
+
+app.post("/delete-profile-picture", async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profilePicture: "/uploads/profile.png" },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "Profile picture deleted" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.post("/addproduct", async (req, res) => {
   try {
     const { name, price, category, userId, company } = req.body;
@@ -137,7 +217,11 @@ app.post("/getprofile", async (req, res) => {
       return res.status(500).json({ message: "User Does not Exist!" });
     }
 
-    res.status(200).json({ name: userData.name, email: userData.email });
+    res.status(200).json({
+      name: userData.name,
+      email: userData.email,
+      profilePicture: userData.profilePicture, // Include profile picture
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
