@@ -10,7 +10,7 @@ const Products = () => {
 
   const deleteProduct = (productId) => {
     axios
-      .post("http://localhost:3000/deleteproduct", { productId })
+      .post("http://localhost:3000/api/products/delete-product", { productId })
       .then((response) => {
         navigate("/profile");
       })
@@ -28,7 +28,9 @@ const Products = () => {
     const userData = JSON.parse(localStorage.getItem("user"));
     const userId = userData._id;
     axios
-      .post("http://localhost:3000/products", { userId: userId })
+      .post("http://localhost:3000/api/products/get-products", {
+        userId: userId,
+      })
       .then((response) => {
         setProducts(response.data);
       })

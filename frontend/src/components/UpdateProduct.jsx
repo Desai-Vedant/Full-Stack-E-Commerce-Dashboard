@@ -14,7 +14,7 @@ const UpdateProduct = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/product/${productId}`)
+      .get(`http://localhost:3000/api/products/get-product/${productId}`)
       .then((response) => {
         setName(response.data.name);
         setPrice(response.data.price);
@@ -37,7 +37,7 @@ const UpdateProduct = () => {
     };
 
     axios
-      .post("http://localhost:3000/updateproduct", productData)
+      .post("http://localhost:3000/api/products/update-product", productData)
       .then((response) => {
         navigate("/"); // Redirect after successfully Updating Product
       })
@@ -133,7 +133,7 @@ const UpdateProduct = () => {
         <button
           type="button"
           onClick={updateProductDetails}
-          className="w-full mt-6 p-3 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+          className="w-full mt-6 p-3 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition duration-200 focus:outline-none focus:ring-2 focus:ring-green-500"
         >
           Update Product Details
         </button>

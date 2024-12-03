@@ -12,7 +12,7 @@ const Nav = () => {
 
       // Call the backend logout endpoint to clear cookies
       await axios.post(
-        "http://localhost:3000/logout",
+        "http://localhost:3000/api/users/logout",
         {},
         { withCredentials: true }
       );
@@ -38,7 +38,7 @@ const Nav = () => {
           <img src="shopping.svg" alt="Shopping" className="w-8 h-8 mr-4" />
           <Link
             to="/"
-            className="text-gray-700 dark:text-gray-200 text-xl font-bold hover:text-blue-500 transition duration-200 ease-in-out"
+            className="text-gray-700 dark:text-gray-200 text-xl font-bold hover:text-green-500 transition duration-200 ease-in-out"
           >
             Product Dashboard
           </Link>
