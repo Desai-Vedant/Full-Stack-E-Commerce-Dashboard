@@ -34,7 +34,7 @@ An Simple **E-Commerce Dashboard** that allows users to manage their accounts an
 | ----------------- | ------------------------------------------- |
 | **React**         | For building a dynamic and responsive UI.   |
 | **Express**       | Lightweight server-side framework.          |
-| **MongoDB Atlas** | Cloud-based NoSQL database for scalability. |
+| **MongoDB Atlas** | Cloud-based NoSQL database. |
 
 ---
 
