@@ -4,7 +4,7 @@ An Simple **E-Commerce Dashboard** that allows users to manage their accounts an
 
 ---
 
-## 🚀 **Features**
+## **Features**
 
 ✨ **Full-Stack Functionality** built using the MERN stack:
 
@@ -12,7 +12,7 @@ An Simple **E-Commerce Dashboard** that allows users to manage their accounts an
 - **Backend:** Express
 - **Database:** MongoDB Atlas
 
-### 🌟 **Key Capabilities**
+### **Key Capabilities**
 
 - **User Authentication:**
 
@@ -28,10 +28,36 @@ An Simple **E-Commerce Dashboard** that allows users to manage their accounts an
 
 ---
 
-## 🛠️ **Tech Stack**
+## **Tech Stack**
 
 | **Technology**    | **Description**                             |
 | ----------------- | ------------------------------------------- |
 | **React**         | For building a dynamic and responsive UI.   |
 | **Express**       | Lightweight server-side framework.          |
 | **MongoDB Atlas** | Cloud-based NoSQL database for scalability. |
+
+---
+
+## **Application Screenshots**
+
+This section provides an overview of the application's interface through screenshots.
+
+### Screenshots
+
+1. **Login Page**  
+   ![Login Page](screenshots/login_page.png)
+
+2. **Register Page**  
+   ![Register Page](screenshots/register_page.png)
+
+3. **Products Page**  
+   ![Products Page](screenshots/products_page.png)
+
+4. **Add Product Page**  
+   ![Add Product Page](screenshots/addproduct_page.png)
+
+5. **Profile Page**  
+   ![Profile Page](screenshots/profile_page.png)
+
+6. **Profile Update Page**  
+   ![Profile Update Page](screenshots/profileupdate_page.png)
