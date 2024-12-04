@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import apiClient from "../apiClient";
 
 const Nav = () => {
   const auth = localStorage.getItem("user");
@@ -8,25 +8,16 @@ const Nav = () => {
 
   const logout = async () => {
     try {
-      console.log("Logging out!");
-
-      // Call the backend logout endpoint to clear cookies
-      await axios.post(
-        "http://localhost:3000/api/users/logout",
-        {},
-        { withCredentials: true }
-      );
-
       // Clear localStorage
       localStorage.clear();
+
+      // Call the backend logout endpoint to clear cookies
+      await apiClient.post("/api/users/logout", {}, { withCredentials: true });
 
       // Redirect user
       navigate("/signup");
     } catch (error) {
-      console.error(
-        "Logout failed:",
-        error.response ? error.response.data : error.message
-      );
+      alert(`Error while Logging out : ${error.response.data.message}`);
     }
   };
 

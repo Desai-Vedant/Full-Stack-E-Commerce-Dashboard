@@ -1,41 +1,36 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import ProductTile from "./ProductTile";
+import apiClient from "../apiClient";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
   const deleteProduct = (productId) => {
-    axios
-      .post("http://localhost:3000/api/products/delete-product", { productId })
+    apiClient
+      .post("/api/products/delete-product", { productId })
       .then((response) => {
         navigate("/profile");
       })
       .catch((error) => {
-        console.error("Error while deleting Product:", error);
+        alert(`Error while deleting Product: ${error.response.data.message}`);
       });
   };
 
   const navigateUpdate = (productId) => {
-    //console.log(productId);
     navigate(`/update/${productId}`);
   };
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    const userId = userData._id;
-    axios
-      .post("http://localhost:3000/api/products/get-products", {
-        userId: userId,
-      })
+    apiClient
+      .post("/api/products/get-products")
       .then((response) => {
         setProducts(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching Products :", error);
+        alert(`Error fetching Products : ${error.response.data.message}`);
       });
   }, []);
 

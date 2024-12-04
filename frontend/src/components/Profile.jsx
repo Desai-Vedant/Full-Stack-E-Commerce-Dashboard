@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import apiClient from "../apiClient";
 
 const Profile = () => {
   const [userName, setUserName] = useState("");
@@ -24,8 +25,8 @@ const Profile = () => {
       }
 
       // Fetch profile data
-      axios
-        .post("http://localhost:3000/api/users/get-profile", {
+      apiClient
+        .post("/api/users/get-profile", {
           userId: userData._id,
         })
         .then((response) => {
@@ -35,7 +36,6 @@ const Profile = () => {
         })
         .catch((error) => {
           setError("Error while getting user data.");
-          console.error(error);
         });
     } catch (e) {
       setError("Failed to parse user data.");
@@ -90,8 +90,8 @@ const Profile = () => {
       formData.append("profilePic", selectedFile);
       formData.append("userId", userData._id);
       try {
-        const response = await axios.post(
-          "http://localhost:3000/api/users/upload-profile-picture",
+        const response = await apiClient.post(
+          "/api/users/upload-profile-picture",
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
@@ -101,7 +101,6 @@ const Profile = () => {
         setProfilePicture(response.data.profilePicture); // Update profile picture
         setShowModal(false); // Close modal after upload
       } catch (error) {
-        console.error("Error uploading profile picture:", error);
         setError("Failed to upload profile picture.");
       }
     }
@@ -117,8 +116,8 @@ const Profile = () => {
     const userData = JSON.parse(storedUser);
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/users/delete-profile-picture",
+      const response = await apiClient.post(
+        "/api/users/delete-profile-picture",
         {
           userId: userData._id,
         }
@@ -127,7 +126,6 @@ const Profile = () => {
       setProfilePicture(`/uploads/profile.png`); // Remove profile picture
       setShowModal(false); // Close modal after delete
     } catch (error) {
-      console.error("Error deleting profile picture:", error);
       setError("Failed to delete profile picture.");
     }
   };

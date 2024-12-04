@@ -28,7 +28,6 @@ const Login = () => {
           navigate("/"); // Redirect after successful login
         })
         .catch((error) => {
-          console.error("Error while logging in user:", error);
           // Do not save data or navigate on error
           alert(`${error.response.data.message}`);
         });

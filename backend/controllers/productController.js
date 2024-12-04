@@ -2,12 +2,12 @@ import Product from "../models/Product.js";
 
 export const addProduct = async (req, res) => {
   try {
-    const { name, price, category, userId, company } = req.body;
+    const { name, price, category, company } = req.body;
     const product = await Product.create({
       name,
       price,
       category,
-      userId,
+      userId: req.user.userId,
       company,
     });
     res.status(200).json(product);
@@ -18,7 +18,7 @@ export const addProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const userId = req.user.userId;
     const products = await Product.find({ userId });
     res.status(200).json(products);
   } catch (error) {
@@ -43,6 +43,7 @@ export const deleteProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const newProductData = req.body;
+    newProductData.userId = req.user.userId;
     const productData = await Product.findByIdAndUpdate(
       newProductData._id,
       newProductData

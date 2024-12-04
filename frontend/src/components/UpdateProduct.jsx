@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import apiClient from "../apiClient";
 
 const UpdateProduct = () => {
   const { productId } = useParams();
@@ -13,8 +14,8 @@ const UpdateProduct = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3000/api/products/get-product/${productId}`)
+    apiClient
+      .get(`/api/products/get-product/${productId}`)
       .then((response) => {
         setName(response.data.name);
         setPrice(response.data.price);
@@ -22,7 +23,9 @@ const UpdateProduct = () => {
         setCompany(response.data.company);
       })
       .catch((error) => {
-        console.error("Error fetching Product data :", error);
+        alert(
+          `Error while fetching Product Data : ${error.response.data.message}`
+        );
       });
   }, [productId]);
 
@@ -33,16 +36,15 @@ const UpdateProduct = () => {
       category: category,
       price: price,
       company: company,
-      userId: JSON.parse(localStorage.getItem("user"))._id,
     };
 
-    axios
-      .post("http://localhost:3000/api/products/update-product", productData)
+    apiClient
+      .post("/api/products/update-product", productData)
       .then((response) => {
         navigate("/"); // Redirect after successfully Updating Product
       })
       .catch((error) => {
-        console.error("Error while Updating Product:", error);
+        alert(`Error while updating product : ${error.response.data.message}`);
       });
   };
 

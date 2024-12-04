@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import apiClient from "../apiClient";
 
 const AddProduct = () => {
   const [name, setName] = useState("");
@@ -19,13 +19,13 @@ const AddProduct = () => {
       userId: JSON.parse(localStorage.getItem("user"))._id,
     };
 
-    axios
-      .post("http://localhost:3000/api/products/add-product", productData)
+    apiClient
+      .post("/api/products/add-product", productData)
       .then((response) => {
         navigate("/"); // Redirect after successfully Adding Product
       })
       .catch((error) => {
-        console.error("Error while Adding Product:", error);
+        alert(`Error while Adding Product : ${error.response.data.message}`);
       });
   };
 
